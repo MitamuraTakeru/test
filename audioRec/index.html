@@ -8,10 +8,13 @@
         <!-- ③ 録音の開始／終了ボタンを設置する部分 -->
         <button class="btn btn-danger" type="button" v-if="status=='ready'" @click="startRecording">録音を開始する</button>
         <button class="btn btn-primary" type="button" v-if="status=='recording'" @click="stopRecording">録音を終了する</button>
-        <button id="play">Play</button>
-        <button id="pause">Pause</button>
-        <button id="stop">Stop</button>
+        
     </div>
+    <button id="play" type="button" v-if="status=='ready'">Play</button>
+        <button id="pause" type="button" v-if="status=='ready'">Pause</button>
+        <button id="stop" type="button" v-if="status=='ready'">Stop</button>
+    
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
     <script>
 
@@ -93,31 +96,31 @@
             }
         });
         // 起動時の処理
-window.addEventListener("load", ()=>{
-    // オーディオを取得
-    const audio = mounted.audioData;
+        window.addEventListener("load", ()=>{
+            // オーディオを取得
+            const audio = mounted.audioData;
 
-    // ボタンDOM取得
-    const play = document.getElementById("play");
-    const pause = document.getElementById("pause");
-    const stop = document.getElementById("stop");
+            // ボタンDOM取得
+            const play = document.getElementById("play");
+            const pause = document.getElementById("pause");
+            const stop = document.getElementById("stop");
 
-    // 再生
-    play.addEventListener("click", ()=>{
-        audio.play();
-    });
+            // 再生
+            play.addEventListener("click", ()=>{
+                audio.play();
+            });
 
-    // 一時停止
-    pause.addEventListener("click", ()=>{
-        audio.pause();
-    });
+            // 一時停止
+            pause.addEventListener("click", ()=>{
+                audio.pause();
+            });
 
-    // 停止
-    stop.addEventListener("click", ()=>{
-        audio.pause();
-        audio.currentTime = 0;  // 曲の先頭に再生開始位置を戻す
-    });
-});
+            // 停止
+            stop.addEventListener("click", ()=>{
+                audio.pause();
+                audio.currentTime = 0;  // 曲の先頭に再生開始位置を戻す
+            });
+        });
     </script>
 </body>
 </html>
