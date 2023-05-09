@@ -40,13 +40,13 @@
           let blob=new Blob(this.chunks,{"type":this.type});
           this.chunks=[];
 
-          /*
+          
           //ファイルのダウンロードを行う場合
           let aTag=document.createElement("a");
           aTag.href=URL.createObjectURL(blob);
           aTag.download="a.mp4";
           aTag.click();
-          */
+          
 
           /*
           //DataURI変換して<input type="hidden">のvalueに入れてPOSTでサーバーに送る場合
