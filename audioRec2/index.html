@@ -3,8 +3,15 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.1, maximum-scale=4,user-scalable=yes">
-
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
+    //音声認識用
+    window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+    var recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja';
+    //ここまで
+
+    
   var TMamMicRec=function(control,micOnBtn,recStartBtn,recStopBtn,recMime){
     this.control=control;
     this.micOnBtn   =micOnBtn;
@@ -27,7 +34,11 @@
       navigator.mediaDevices.getUserMedia({audio:true})
       .then(function(stream){
         this.stream=stream;
-        
+        // 録音開始
+        function record()
+        {
+            recognition.start();
+        }
         this.mediaRecorder=new MediaRecorder(this.stream);
         this.mediaRecorder.addEventListener("dataavailable",function(event){
           this.chunks.push(event.data);
@@ -39,6 +50,11 @@
           this.recMime.innerHTML=this.type;
           let blob=new Blob(this.chunks,{"type":this.type});
           this.chunks=[];
+          // 録音終了時トリガー
+          recognition.addEventListener('result', function(event){
+          var text = event.results.item(0).item(0).transcript;
+          $("#result_text").val(text);
+          }, false);
 
           
           //ファイルのダウンロードを行う場合
