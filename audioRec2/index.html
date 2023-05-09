@@ -6,9 +6,9 @@
   
 <script>
     //音声認識用
-    window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+    /*window.SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
     var recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja';
+    recognition.lang = 'ja';*/
     //ここまで
 
     
@@ -35,10 +35,10 @@
       .then(function(stream){
         this.stream=stream;
         //録音開始
-        function record()
+        /*function record()
         {
             recognition.start();
-        }
+        }*/
         this.mediaRecorder=new MediaRecorder(this.stream);
         this.mediaRecorder.addEventListener("dataavailable",function(event){
           this.chunks.push(event.data);
@@ -51,10 +51,10 @@
           let blob=new Blob(this.chunks,{"type":this.type});
           this.chunks=[];
           // 録音終了時トリガー
-          recognition.addEventListener('result', function(event){
+          /*recognition.addEventListener('result', function(event){
           var text = event.results.item(0).item(0).transcript;
           $("#result_text").val(text);
-          }, false);
+          }, false);*/
 
           
           //ファイルのダウンロードを行う場合
@@ -135,8 +135,7 @@
 </script>
 </head>
 <body>
-    <div><textarea id="result_text" cols="100" rows="10">
-    </textarea></div><br>
+    
   <div id="Control">
     <button id="MicOn">マイクの使用を開始</button><br/>
     <button id="RecStart">録音開始</button>
