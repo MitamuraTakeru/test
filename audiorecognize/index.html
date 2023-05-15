@@ -1,18 +1,46 @@
 <button id="start-btn">start</button>
 <button id="stop-btn">stop</button>
 <div id="result-div"></div>
+<hr>
+<audio id="player" controls></audio>
 
 <script>
   const startBtn = document.querySelector('#start-btn');
   const stopBtn = document.querySelector('#stop-btn');
   const resultDiv = document.querySelector('#result-div');
+  const player = document.querySelector('#player');
 
+  let mediaRecorder = null;
+  let mimeType = '';
+  let chunks = [];
+
+  navigator.mediaDevices.getUserMedia({"video": false, "audio": true})
+        .then(function (stream) {
+             mediaRecorder = new MediaRecorder(stream);
+             mediaRecorder.ondataavailable = function (e) {
+              mimeType = e.data.type;
+              chunks.push(e.data);
+          };
+          mediaRecorder.onstop = function () {
+              const blob = new Blob(chunks, {'type': mimeType});
+              chunks = [];
+              player.src = window.URL.createObjectURL(blob);
+            };
+          })
+          .catch(function (e) {
+                alert(e);
+          });
   SpeechRecognition = webkitSpeechRecognition || SpeechRecognition;
+  //様々なブラウザでマイクへのアクセス権を取得する
+  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+  //audioのみtrue。Web Audio APIが問題なく使えるのであれば、第二引数で指定した関数を実行する
+  
+
   let recognition = new SpeechRecognition();
 
-  recognition.lang = 'ja-JP';
-  recognition.interimResults = true;
-  recognition.continuous = true;
+  recognition.lang = 'ja-JP';//言語選択　アメリカ英語->en-US
+  recognition.interimResults = true;//認識途中の結果を得る
+  recognition.continuous = true;//認識し続ける
 
   let finalTranscript = ''; // 確定した(黒の)認識結果
 
@@ -31,8 +59,10 @@
 
   startBtn.onclick = () => {
     recognition.start();
+    MediaRecorder.start();
   }
   stopBtn.onclick = () => {
     recognition.stop();
+    MediaRecorder.stop();
   }
 </script>
