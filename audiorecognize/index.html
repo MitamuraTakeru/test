@@ -59,10 +59,17 @@
 
   startBtn.onclick = () => {
     recognition.start();
-    MediaRecorder.start();
+    
   }
   stopBtn.onclick = () => {
     recognition.stop();
-    MediaRecorder.stop();
+    
   }
+  startBtn.addEventListener('click', function () {
+    mediaRecorder.start();
+  });
+
+  stopBtn.addEventListener('click', function () {
+    mediaRecorder.stop();
+  });
 </script>
